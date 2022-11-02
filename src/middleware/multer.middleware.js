@@ -29,6 +29,7 @@ const storageProduct = new GridFsStorage({
 	file: async (req, file) => {
 		const { toko_id } = req.params;
 		return {
+			metadata: { toko_id },
 			bucketName: `product`,
 			filename: `${toko_id}-${Date.now()}${path.extname(file.originalname)}`,
 		};

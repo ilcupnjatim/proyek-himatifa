@@ -57,6 +57,14 @@ class ProductDB {
 			let alamat = alamatx ? alamatx : data.alamat;
 			let qt = qtx ? qtx : data.qt;
 			let price = pricex ? pricex : data.price;
+			let product_tokos = await Toko.findOne({ product: { $elemMatch: { id_product } } });
+			if (product_tokos) {
+				let upData = { id_product: data.id_product, toko_id: data.toko_id, name, price, qt, image, _id: data._id };
+				let array = product_tokos.product;
+				let indexes = array.findIndex((x) => x.id_product == id_product);
+				array[indexes] = upData;
+				await product_tokos.updateOne({ product: array });
+			}
 			await this.product.updateOne({ id_product }, { name, qt, price, image, alamat });
 			return await this.findDatabyProductId(id_product);
 		}

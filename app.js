@@ -6,6 +6,7 @@ import session from "express-session";
 
 import passp from "./src/middleware/passport.middleware.js";
 import routerAuth from "./src/router/auth.router.js";
+import routerFile from "./src/router/image.router.js";
 import routerShop from "./src/router/toko.router.js";
 import routerProduct from "./src/router/product.router.js";
 import { conn } from "./database/index.js";
@@ -55,6 +56,7 @@ app.get("/", (req, res) => {
 app.use("/api/seller/v1/shop", passport.authenticate("jwt", { session: false }), routerShop);
 app.use("/api/seller/v1/product", passport.authenticate("jwt", { session: false }), routerProduct);
 app.use("/api/seller/auth", routerAuth);
+app.use("/api/seller/file", routerFile);
 
 app.listen(PORT, async () => {
 	await conn.connectRedis();

@@ -11,7 +11,7 @@ class SellerDB {
 
 	async getAllSeller(id) {
 		if (id) {
-			var array = await this.seller.find({ _id });
+			var array = await this.seller.find({ _id: id });
 		} else {
 			var array = await this.seller.find();
 		}

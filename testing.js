@@ -41,4 +41,8 @@ async function getDataToko() {
 	});
 }
 
-getDataToko().then(console.log).catch(console.log());
+// getDataToko().then(console.log).catch(console.log());
+
+import mongoose from "mongoose";
+var _id = mongoose.Types.ObjectId("6362189f9aa8247dc8d6203a");
+console.log(_id);
