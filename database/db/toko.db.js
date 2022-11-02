@@ -6,9 +6,19 @@ class TokoDB {
 		this.toko = Toko;
 	}
 
-	async createToko(name = "", toko_id, owner = "", image_profile = "") {
-		let data = await this.toko.create({ name, toko_id, owner, image_profile });
+	async createToko(name = "", alamat = "", toko_id, owner = "", image_profile = "", status = 0) {
+		let data = await this.toko.create({ name, alamat, toko_id, owner, image_profile, status });
 		return data;
+	}
+
+	async findTokoByStatus(status) {
+		if (status !== null) {
+			var data = await this.toko.find({ status });
+		} else {
+			var data = await this.toko.find();
+		}
+		const result = data ? data : null;
+		return result;
 	}
 
 	async findById(_id) {
@@ -29,11 +39,13 @@ class TokoDB {
 		return result;
 	}
 
-	async updateTokoDB(name, toko_id, toko_id_update) {
+	async updateTokoDB(name, toko_id, toko_id_update, alamatx, statusx) {
 		let data = await this.toko.findOne({ toko_id });
 		if (data) {
 			let id = toko_id_update ? toko_id_update : data.toko_id;
-			await this.toko.updateOne({ toko_id }, { name: name ? name : data.name, toko_id: id });
+			let alamat = alamatx ? alamatx : data.alamat;
+			let status = statusx ? Number(statusx) : Number(data.status);
+			await this.toko.updateOne({ toko_id }, { name: name ? name : data.name, toko_id: id, alamat, status });
 			return await this.toko.findOne({ toko_id: id });
 		} else {
 			return null;

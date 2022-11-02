@@ -9,6 +9,15 @@ class SellerDB {
 		await this.seller.create({ username, name, email, password, image: [] });
 	}
 
+	async getAllSeller(id) {
+		if (id) {
+			var array = await this.seller.find({ _id });
+		} else {
+			var array = await this.seller.find();
+		}
+		return array;
+	}
+
 	async findOneEmail(email) {
 		const data = await this.seller.findOne({ email });
 		const result = data ? data : null;

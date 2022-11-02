@@ -9,8 +9,8 @@ class TokoController extends TokoDB {
 
 	async createDataToko(req, res, next) {
 		try {
-			const { name, toko_id } = req.body;
-			if (!name || !toko_id || !req.file) {
+			const { name, toko_id, alamat } = req.body;
+			if (!name || !toko_id || !req.file || !alamat) {
 				return this.err.badRequest(res);
 			}
 			if (toko_id.match(/^\S*$/) == null) {
@@ -27,7 +27,7 @@ class TokoController extends TokoDB {
 					message: `Id Toko sudah terpakai atau anda Sudah pernah create toko sebelumnya!`,
 				});
 			} else {
-				let datas = await this.createToko(name, toko_id, req.user._id, req.file.id);
+				let datas = await this.createToko(name, alamat, toko_id, req.user._id, req.file.id);
 				return res.status(200).send({
 					status: res.statusCode,
 					message: `Sukses Create Toko!`,
@@ -68,10 +68,10 @@ class TokoController extends TokoDB {
 	async updateToko(req, res, next) {
 		try {
 			const { toko_id } = req.params;
-			const { name, toko_id_update } = req.body;
+			const { name, toko_id_update, alamat, status } = req.body;
 			const data_id = await this.findTokoId(toko_id);
 			if (data_id) {
-				let up = await this.updateTokoDB(name, toko_id, toko_id_update);
+				let up = await this.updateTokoDB(name, toko_id, toko_id_update, alamat, status);
 				return res.status(200).send({
 					status: res.statusCode,
 					message: `Sukses Update Data Toko`,
@@ -108,6 +108,22 @@ class TokoController extends TokoDB {
 					message: `Data Toko Tidak Ditemukan`,
 				});
 			}
+		} catch (error) {
+			console.log(error);
+			return this.err.internalError(res);
+		}
+	}
+
+	async getTokoStatus(req, res, next) {
+		try {
+			let { status } = req.params;
+			let stts = status ? Number(status) : null;
+			let array = await this.findTokoByStatus(stts);
+			return res.status(200).send({
+				status: res.statusCode,
+				message: `GET ALL Toko Status : ${stts !== null ? stts : "ALL"}`,
+				data: array,
+			});
 		} catch (error) {
 			console.log(error);
 			return this.err.internalError(res);

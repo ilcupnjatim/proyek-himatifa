@@ -29,9 +29,9 @@ import axios from "axios";
 async function getDataToko() {
 	return new Promise((resolve, reject) => {
 		axios
-			.get(`http://47.254.216.11:8888/api/seller/v1/product/Ini-nama-Product-1.635e3fdb0f93dedf87ce3ce8.635e3948af42d1ad700326df`, {
+			.get(`http://malon.my.id:8888/api/seller/v1/product/Ini-nama-Product-1.635e3fdb0f93dedf87ce3ce8.635e3948af42d1ad700326df`, {
 				headers: {
-					Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzVjY2MxN2YyOTQzZGFkMWViMTlmZmQiLCJpYXQiOjE2NjcxMTg2ODksImV4cCI6MTY2NzEyMjI4OX0.feEdMFFltE52Q1q19ki58V71YWy5YwgReGz6Jqmstbg`,
+					Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzVjY2MxN2YyOTQzZGFkMWViMTlmZmQiLCJpYXQiOjE2NjczNjY1OTEsImV4cCI6MTY2NzM3MDE5MX0.cmiUM0uhzE1H-VkVYQWGDUs5cXdpNFKjUhCBRTg4ZFg`,
 				},
 			})
 			.then(({ data }) => {

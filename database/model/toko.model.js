@@ -6,6 +6,10 @@ const TokoSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
+		alamat: {
+			type: String,
+			required: true,
+		},
 		owner: {
 			type: String,
 			required: true,
@@ -16,6 +20,10 @@ const TokoSchema = new mongoose.Schema(
 		},
 		toko_id: {
 			type: String,
+			required: true,
+		},
+		status: {
+			type: Number,
 			required: true,
 		},
 		product: {
