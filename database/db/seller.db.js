@@ -18,6 +18,12 @@ class SellerDB {
 		return array;
 	}
 
+	async getSellerId(_id) {
+		const data = await this.seller.findOne({ _id });
+		const result = data ? data : null;
+		return result;
+	}
+
 	async findOneEmail(email) {
 		const data = await this.seller.findOne({ email });
 		const result = data ? data : null;

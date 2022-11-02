@@ -1,3 +1,4 @@
+import SellerDB from "../../database/db/seller.db.js";
 import TokoDB from "../../database/db/toko.db.js";
 import ErrorHandler from "../middleware/errHandler.middleware.js";
 
@@ -22,7 +23,7 @@ class TokoController extends TokoDB {
 			const data_id = await this.findTokoId(toko_id);
 			const toko_user_id = await this.findTokobyUserId(req.user._id);
 			if (data_id || toko_user_id) {
-				return res.status(403).send({
+				return res.status(404).send({
 					status: res.statusCode,
 					message: `Id Toko sudah terpakai atau anda Sudah pernah create toko sebelumnya!`,
 				});
