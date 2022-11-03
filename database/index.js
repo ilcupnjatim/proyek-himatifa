@@ -6,39 +6,39 @@ let tokoFile = { file: null, chunks: null };
 let productFile = { file: null, chunks: null };
 
 class Connection {
-	constructor() {}
+    constructor() {}
 
-	connectMongo() {
-		const connection = mongoose.connect(process.env.db, {
-			useNewUrlParser: true,
-			useUnifiedTopology: true,
-		});
-		const database = mongoose.connection;
-		database.on("error", console.error.bind(console, "connection error:"));
-		database.once("open", () => {
-			tokoFile.file = database.collection(`toko.files`);
-			tokoFile.chunks = database.collection(`toko.chunks`);
-			productFile.file = database.collection(`product.files`);
-			productFile.chunks = database.collection(`product.chunks`);
-			console.log(`[DB] MongoDB Connected!`);
-		});
+    connectMongo() {
+        const connection = mongoose.connect(process.env.db, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
+        const database = mongoose.connection;
+        // database.on("error", console.error.bind(console, "connection error:"));
+        // database.once("open", () => {
+        // 	tokoFile.file = database.collection(`toko.files`);
+        // 	tokoFile.chunks = database.collection(`toko.chunks`);
+        // 	productFile.file = database.collection(`product.files`);
+        // 	productFile.chunks = database.collection(`product.chunks`);
+        // 	console.log(`[DB] MongoDB Connected!`);
+        // });
 
-		return connection;
-	}
+        return connection;
+    }
 
-	async connectRedis() {
-		client = redis.createClient({
-			url: process.env.REDIS_URL,
-		});
-		client.on("error", (error) => {
-			console.log(`Ini Error Redis : ${error}`);
-		});
-		client.on("connect", () => {
-			console.log("[DB] Redis Connected!");
-		});
+    async connectRedis() {
+        client = redis.createClient({
+            url: process.env.REDIS_URL,
+        });
+        client.on("error", (error) => {
+            console.log(`Ini Error Redis : ${error}`);
+        });
+        client.on("connect", () => {
+            console.log("[DB] Redis Connected!");
+        });
 
-		await client.connect();
-	}
+        await client.connect();
+    }
 }
 
 const conn = new Connection();
