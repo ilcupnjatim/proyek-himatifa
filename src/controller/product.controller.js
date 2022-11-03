@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 import ProductDB from "../../database/db/product.db.js";
 import StarDB from "../../database/db/star.db.js";
 import TokoDB from "../../database/db/toko.db.js";
-import { productFile } from "../../database/index.js";
 import ErrorHandler from "../middleware/errHandler.middleware.js";
 
 class ProductController extends ProductDB {
@@ -16,9 +15,15 @@ class ProductController extends ProductDB {
 	async createProductToko(req, res, next) {
 		try {
 			const { toko_id } = req.params;
-			const { name, qt, price } = req.body;
-			if (!name || !qt || !price) {
+			let { name, qt, price, product_uom, product_category } = req.body;
+
+			if (!name || !qt || !price || !product_uom) {
 				return this.err.badRequest(res);
+			}
+			if (product_category) {
+				if (!(Array.isArray(product_category) && product_category.length)) {
+					product_category = [product_category];
+				}
 			}
 			let dataToko = await this.toko.findById(toko_id);
 			if (dataToko) {
@@ -29,7 +34,7 @@ class ProductController extends ProductDB {
 					// await this.pushImage(_id, { id: value.id, filename: value.filename });
 					return { id: value.id, filename: value.filename };
 				});
-				let data = await this.createProduct(_id, id_product, toko_id, name, Number(price), Number(qt), image);
+				let data = await this.createProduct(_id, id_product, toko_id, name, Number(price), Number(qt), image, product_uom, product_category);
 
 				return res.status(200).send({
 					status: res.statusCode,
@@ -52,16 +57,21 @@ class ProductController extends ProductDB {
 	async updateProductToko(req, res, next) {
 		try {
 			const { id_product, toko_id } = req.params;
-			const { name, qt, price, alamat } = req.body;
+			let { name, qt, price, product_uom, product_category } = req.body;
 			if (!id_product) {
 				return this.err.badRequest(res);
+			}
+			if (product_category) {
+				if (!(Array.isArray(product_category) && product_category.length)) {
+					product_category = [product_category];
+				}
 			}
 			let data = await this.findDatabyProductId(id_product);
 			if (data) {
 				let images = req.files.map((value, index) => {
 					return { id: value.id, filename: value.filename };
 				});
-				let up = await this.updateProductData(id_product, name, qt, price, images, alamat);
+				let up = await this.updateProductData(id_product, name, qt, price, images, product_uom, product_category);
 				return res.status(200).send({
 					status: res.statusCode,
 					message: `Sukses Update Data Toko`,
@@ -148,6 +158,24 @@ class ProductController extends ProductDB {
 			return res.status(200).send({
 				status: res.statusCode,
 				message: `Add Product Star ${id_product} : ${star}`,
+				data,
+			});
+		} catch (error) {
+			console.log(error);
+			return this.err.internalError(res);
+		}
+	}
+
+	async getStarProduct(req, res, next) {
+		try {
+			const { id_product } = req.params;
+			if (!id_product) {
+				return this.err.badRequest(res);
+			}
+			let data = await this.star.getStar(id_product);
+			return res.status(200).send({
+				status: res.statusCode,
+				message: `Get Product Star ${id_product}`,
 				data,
 			});
 		} catch (error) {

@@ -8,13 +8,13 @@ class ProductDB {
 		this.toko = Toko;
 	}
 
-	async createProduct(_id, id_product, toko_id, name, price, qt, image) {
+	async createProduct(_id, id_product, toko_id, name, price, qt, image, product_uom, product_category = []) {
 		let seller = await Toko.findOne({ _id: toko_id });
-		let data = await this.product.create({ _id, id_product, toko_id, name, price, qt, image });
+		let data = await this.product.create({ _id, id_product, toko_id, name, price, qt, image, product_uom, product_category });
 		if (seller) {
 			await Toko.updateOne({ _id: toko_id }, { $push: { product: data } });
 		}
-		return { _id, id_product, toko_id, name, price, qt, image };
+		return { _id, id_product, toko_id, name, price, qt, image, product_uom, product_category };
 	}
 
 	async pushImage(_id, image) {
@@ -37,7 +37,7 @@ class ProductDB {
 	}
 
 	async deleteAllImage(id_product) {
-		let data = await this.findDatabyProductId(id_product);
+		let data = await this.product.findOne({ id_product });
 		if (data) {
 			data.image.map(async (v) => {
 				const dataImg = await productFile.file.findOne({ _id: v.id });
@@ -49,23 +49,24 @@ class ProductDB {
 		}
 	}
 
-	async updateProductData(id_product, namex, qtx, pricex, image, alamatx) {
+	async updateProductData(id_product, namex, qtx, pricex, image, product_uomx, product_categoryx = []) {
 		let data = await this.findDatabyProductId(id_product);
 		if (data) {
 			await this.deleteAllImage(id_product);
 			let name = namex ? namex : data.name;
-			let alamat = alamatx ? alamatx : data.alamat;
 			let qt = qtx ? qtx : data.qt;
 			let price = pricex ? pricex : data.price;
+			let product_uom = product_uomx ? product_uomx : data.product_uom;
+			let product_category = Array.isArray(product_categoryx) && product_categoryx.length ? product_categoryx : [];
 			let product_tokos = await Toko.findOne({ product: { $elemMatch: { id_product } } });
 			if (product_tokos) {
-				let upData = { id_product: data.id_product, toko_id: data.toko_id, name, price, qt, image, _id: data._id };
+				let upData = { id_product: data.id_product, toko_id: data.toko_id, name, price, qt, image, _id: data._id, product_uom, product_category };
 				let array = product_tokos.product;
 				let indexes = array.findIndex((x) => x.id_product == id_product);
 				array[indexes] = upData;
 				await product_tokos.updateOne({ product: array });
 			}
-			await this.product.updateOne({ id_product }, { name, qt, price, image, alamat });
+			await this.product.updateOne({ id_product }, { name, qt, price, image, product_uom, product_category });
 			return await this.findDatabyProductId(id_product);
 		}
 	}
