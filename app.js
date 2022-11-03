@@ -11,6 +11,8 @@ import { conn } from "./database/index.js";
 import routerAuth from "./src/router/auth.router.js";
 import routerFile from "./src/router/image.router.js";
 import routerShop from "./src/router/toko.router.js";
+import adminRoutes from "./src/router/admin.router.js";
+import loginRoutes from "./src/router/authAdmin.router.js";
 import routerProduct from "./src/router/product.router.js";
 import routerTransaction from "./src/router/transaction.router.js";
 
@@ -60,6 +62,9 @@ app.use("/api/seller/v1/product", passport.authenticate("jwt", { session: false 
 app.use("/api/seller/v1/transaction", routerTransaction);
 app.use("/api/seller/auth", routerAuth);
 app.use("/api/seller/file", routerFile);
+
+app.use("/api/admin/v1/data", adminRoutes);
+app.use("/api/admin/auth", loginRoutes);
 
 app.listen(PORT, async () => {
 	await conn.connectRedis();
