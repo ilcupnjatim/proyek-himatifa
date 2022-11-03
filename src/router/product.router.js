@@ -25,4 +25,8 @@ router.post("/star/:id_product", async (req, res, next) => {
 	await controller.starProduct(req, res, next);
 });
 
+router.get("/star/:id_product", async (req, res, next) => {
+	await controller.getStarProduct(req, res, next);
+});
+
 export default router;
