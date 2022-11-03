@@ -5,11 +5,13 @@ import SellerDB from "../../database/db/seller.db.js";
 import ErrorHandler from "../middleware/errHandler.middleware.js";
 import { getHashedPassword } from "../../lib/crypto.js";
 import { client } from "../../database/index.js";
+import TokoDB from "../../database/db/toko.db.js";
 
 class AuthController extends SellerDB {
 	constructor() {
 		super();
 		this.err = new ErrorHandler();
+		this.toko = new TokoDB();
 	}
 
 	async signUp(req, res, next) {
@@ -62,7 +64,7 @@ class AuthController extends SellerDB {
 						message: info.message,
 					});
 				}
-				req.login(user, { session: false }, (err) => {
+				req.login(user, { session: false }, async (err) => {
 					if (err) {
 						console.log(err);
 						res.send(err);
@@ -71,7 +73,9 @@ class AuthController extends SellerDB {
 					const token = jwt.sign({ _id: userData._id }, process.env.jwt, {
 						expiresIn: process.env.expiredJWT,
 					});
-					return res.status(200).send({ status: res.statusCode, message: info.message, token });
+					let data_toko = await this.toko.findTokobyUserId(userData._id);
+					let data = data_toko ? { toko_id: data_toko.toko_id } : null;
+					return res.status(200).send({ status: res.statusCode, message: info.message, token, data });
 				});
 			})(req, res, next);
 		} catch (error) {

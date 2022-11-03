@@ -144,9 +144,11 @@ class ProductController extends ProductDB {
 				return this.err.badRequest(res);
 			}
 			await this.star.addStar(star, id_product);
+			let data = await this.star.getStar(id_product);
 			return res.status(200).send({
 				status: res.statusCode,
 				message: `Add Product Star ${id_product} : ${star}`,
+				data,
 			});
 		} catch (error) {
 			console.log(error);
