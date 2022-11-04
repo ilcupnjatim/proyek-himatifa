@@ -1,5 +1,6 @@
 import express from "express";
 const router = express.Router();
+import passport from "passport";
 
 import authAdminController from "../controller/authAdmin.controller.js";
 
