@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 let adminSchema = new mongoose.Schema({
-    username: {
+    email: {
         type: String,
         required: "This field is required",
     },

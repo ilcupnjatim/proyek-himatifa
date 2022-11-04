@@ -1,13 +1,14 @@
 import bcrypt from "bcryptjs";
 import adminModel from "../../database/model/admin.model.js";
+import { getHashedPassword } from "../../lib/crypto.js";
 
 class _admin {
     addAdmin = async (req, res) => {
         try {
-            const hash_password = bcrypt.hashSync(req.body.password, 12);
+            const hash_password = getHashedPassword(req.body.password);
 
             const admin = new adminModel({
-                username: req.body.username,
+                email: req.body.email,
                 password: hash_password,
             });
             admin.save((err, docs) => {
