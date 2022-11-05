@@ -5,6 +5,10 @@ import { uploadToko } from "../middleware/multer.middleware.js";
 const router = express.Router();
 const controller = new TokoController();
 
+router.get("/image/:image_profile", async (req, res, next) => {
+	await controller.getTokoImage(req, res, next);
+});
+
 router.get("/data/:toko_id", async (req, res, next) => {
 	await controller.dataToko(req, res, next);
 });

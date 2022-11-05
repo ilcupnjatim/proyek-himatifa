@@ -1,6 +1,7 @@
 import SellerDB from "../../database/db/seller.db.js";
 import TokoDB from "../../database/db/toko.db.js";
 import TransactionDB from "../../database/db/transaction.db.js";
+import { tokoFile } from "../../database/index.js";
 import ErrorHandler from "../middleware/errHandler.middleware.js";
 
 class TokoController extends TokoDB {
@@ -34,6 +35,28 @@ class TokoController extends TokoDB {
 					status: res.statusCode,
 					message: `Sukses Create Toko!`,
 					data: datas,
+				});
+			}
+		} catch (error) {
+			console.log(error);
+			return this.err.internalError(res);
+		}
+	}
+
+	async getTokoImage(req, res, next) {
+		try {
+			const { image_profile } = req.params;
+			const dataImg = await tokoFile.file.findOne({ _id: image_profile });
+			if (dataImg) {
+				return res.status(200).send({
+					status: res.statusCode,
+					message: "Sukses GET Data Image",
+					data: dataImg,
+				});
+			} else {
+				return res.status(404).send({
+					status: res.statusCode,
+					message: `Data Image Tidak Ditemukan`,
 				});
 			}
 		} catch (error) {
