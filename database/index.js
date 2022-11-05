@@ -4,6 +4,8 @@ import redis from "redis";
 let client = null;
 let tokoFile = { file: null, chunks: null };
 let productFile = { file: null, chunks: null };
+let gridfsbucketToko;
+let gridfsbucketProduct;
 
 class Connection {
 	constructor() {}
@@ -16,6 +18,12 @@ class Connection {
 		const database = mongoose.connection;
 		database.on("error", console.error.bind(console, "connection error:"));
 		database.once("open", () => {
+			gridfsbucketToko = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
+				bucketName: "toko",
+			});
+			gridfsbucketProduct = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
+				bucketName: "product",
+			});
 			tokoFile.file = database.collection(`toko.files`);
 			tokoFile.chunks = database.collection(`toko.chunks`);
 			productFile.file = database.collection(`product.files`);
@@ -44,4 +52,4 @@ class Connection {
 const conn = new Connection();
 const db = conn.connectMongo();
 
-export { db, conn, tokoFile, productFile, client };
+export { db, conn, tokoFile, productFile, client, gridfsbucketToko, gridfsbucketProduct };
