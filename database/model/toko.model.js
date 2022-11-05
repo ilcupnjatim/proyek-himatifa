@@ -26,6 +26,10 @@ const TokoSchema = new mongoose.Schema(
 			type: Number,
 			required: true,
 		},
+		pendapatan_total: {
+			type: Number,
+			required: true,
+		},
 		product: {
 			type: Array,
 			required: true,

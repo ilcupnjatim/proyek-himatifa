@@ -10,7 +10,7 @@ class TransactionController extends TransactionDB {
 	async makeTransaction(req, res, next) {
 		try {
 			// let products = [{ id_product: "xxx", total_price: 20000 }];
-			const { name, alamat, contact, cart } = req.body;
+			const { name, alamat, contact, cart, toko_id } = req.body;
 			if (!name || !contact || !alamat) {
 				return this.err.badRequest(res);
 			}
@@ -30,12 +30,12 @@ class TransactionController extends TransactionDB {
 				let array = cart.map((v, i) => {
 					return { id_product: v.id_product, total_price: Number(v.total_price) };
 				});
-				let sv = await this.createTransaction(name, alamat, contact, array);
+				let sv = await this.createTransaction(name, alamat, contact, array, toko_id);
 				if (sv) {
 					return res.status(200).send({
 						status: res.statusCode,
 						message: `Sukses Create Transaction id : ${sv._id}`,
-						data: sv,
+						data: { transaction: sv.create, code: sv.createCode },
 					});
 				} else {
 					return this.err.internalError(res);

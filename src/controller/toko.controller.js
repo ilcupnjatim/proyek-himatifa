@@ -1,5 +1,6 @@
 import SellerDB from "../../database/db/seller.db.js";
 import TokoDB from "../../database/db/toko.db.js";
+import TransactionDB from "../../database/db/transaction.db.js";
 import ErrorHandler from "../middleware/errHandler.middleware.js";
 
 class TokoController extends TokoDB {
@@ -125,6 +126,54 @@ class TokoController extends TokoDB {
 				message: `GET ALL Toko Status : ${stts !== null ? stts : "ALL"}`,
 				data: array,
 			});
+		} catch (error) {
+			console.log(error);
+			return this.err.internalError(res);
+		}
+	}
+
+	async claimCode(req, res, next) {
+		try {
+			const { code } = req.body;
+			if (!code) {
+				return this.err.badRequest(res);
+			}
+			const check = await new TransactionDB().findCode(code);
+			if (check && check.claim == false) {
+				let tokoNya = await new TransactionDB().getDataTransaction(check.transaction_id);
+				const isUser = await this.findTokoId(tokoNya.toko_id);
+				if (isUser && isUser.owner == req.user._id) {
+					let total_prices = Number(isUser.pendapatan_total);
+					for (let i = 0; i < tokoNya.cart.length; i++) {
+						total_prices += tokoNya.cart[i].total_price;
+					}
+					let up = await this.updatePendapatan(tokoNya.toko_id, total_prices);
+					if (up) {
+						let dataCode = await new TransactionDB().updateClaim(code);
+						return res.status(200).send({
+							status: res.statusCode,
+							message: `Sukses Update Pendapatan toko : ${tokoNya.toko_id}`,
+							data: up,
+							code: dataCode,
+						});
+					} else {
+						return res.status(404).send({
+							status: res.statusCode,
+							message: `Data Toko Tidak Ditemukan`,
+						});
+					}
+				} else {
+					return res.status(404).send({
+						status: res.statusCode,
+						message: `Data User dan Claim Code Tidak Sesuai!`,
+					});
+				}
+			} else {
+				return res.status(404).send({
+					status: res.statusCode,
+					message: `Code Tidak Ditemukan Atau Sudah Di Claim`,
+				});
+			}
 		} catch (error) {
 			console.log(error);
 			return this.err.internalError(res);

@@ -7,7 +7,7 @@ class TokoDB {
 	}
 
 	async createToko(name = "", alamat = "", toko_id, owner = "", image_profile = "", status = 0) {
-		let data = await this.toko.create({ name, alamat, toko_id, owner, image_profile, status });
+		let data = await this.toko.create({ name, alamat, toko_id, owner, image_profile, status, pendapatan_total: 0 });
 		return data;
 	}
 
@@ -47,6 +47,17 @@ class TokoDB {
 			let status = statusx ? Number(statusx) : Number(data.status);
 			await this.toko.updateOne({ toko_id }, { name: name ? name : data.name, toko_id: id, alamat, status });
 			return await this.toko.findOne({ toko_id: id });
+		} else {
+			return null;
+		}
+	}
+
+	async updatePendapatan(toko_id, pendapatan_totalx) {
+		let data = await this.toko.findOne({ toko_id });
+		if (data) {
+			let pendapatan_total = pendapatan_totalx ? Number(pendapatan_totalx) : Number(data.pendapatan_total);
+			await this.toko.updateOne({ toko_id }, { pendapatan_total });
+			return await this.toko.findOne({ toko_id: toko_id });
 		} else {
 			return null;
 		}

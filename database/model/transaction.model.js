@@ -18,6 +18,14 @@ const TransactionSchema = new mongoose.Schema(
 			type: Number,
 			required: true,
 		},
+		status: {
+			type: Number,
+			required: true,
+		},
+		toko_id: {
+			type: String,
+			required: true,
+		},
 		cart: {
 			type: Array,
 			required: true,

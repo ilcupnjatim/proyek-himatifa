@@ -25,4 +25,8 @@ router.get("/all/:status?", async (req, res, next) => {
 	await controller.getTokoStatus(req, res, next);
 });
 
+router.post("/code/claim", async (req, res, next) => {
+	await controller.claimCode(req, res, next);
+});
+
 export default router;
