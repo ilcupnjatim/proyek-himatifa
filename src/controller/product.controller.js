@@ -28,7 +28,7 @@ class ProductController extends ProductDB {
 			let dataToko = await this.toko.findById(toko_id);
 			if (dataToko) {
 				const _id = new mongoose.mongo.ObjectId();
-				const id_product = `${name.replaceAll(" ", "-").replaceAll(".", "")}.${_id}.${toko_id}`;
+				const id_product = `${name.replace(/\s/g, "-").replace(/\./g, "-")}.${_id}.${toko_id}`;
 
 				let image = req.files.map((value, index) => {
 					// await this.pushImage(_id, { id: value.id, filename: value.filename });

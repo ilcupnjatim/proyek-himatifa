@@ -8,6 +8,13 @@ class ProductDB {
 		this.toko = Toko;
 	}
 
+	async getAllProductDB() {
+		const array = await this.product.find({});
+		if (array) {
+			return array;
+		}
+	}
+
 	async createProduct(_id, id_product, toko_id, name, price, qt, image, product_uom, product_category = []) {
 		let seller = await Toko.findOne({ _id: toko_id });
 		let data = await this.product.create({ _id, id_product, toko_id, name, price, qt, image, product_uom, product_category });
