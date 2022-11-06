@@ -9,7 +9,12 @@ class ProductUser extends ProductDB {
 
 	async getAllProduct(req, res, next) {
 		try {
-			const array = await this.getAllProductDB();
+			const { category } = req.query;
+			if (category) {
+				var array = await this.findAllProductCategory(category);
+			} else {
+				var array = await this.getAllProductDB();
+			}
 			if (array) {
 				return res.status(200).send({
 					status: res.statusCode,

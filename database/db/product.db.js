@@ -10,9 +10,12 @@ class ProductDB {
 
 	async getAllProductDB() {
 		const array = await this.product.find({});
-		if (array) {
-			return array;
-		}
+		return array;
+	}
+
+	async findAllProductCategory(category) {
+		const array = await this.product.find({ product_category: { $in: category } });
+		return array;
 	}
 
 	async createProduct(_id, id_product, toko_id, name, price, qt, image, product_uom, product_category = []) {
