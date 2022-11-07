@@ -52,12 +52,12 @@ class TokoDB {
 		}
 	}
 
-	async updatePendapatan(toko_id, pendapatan_totalx) {
-		let data = await this.toko.findOne({ toko_id });
+	async updatePendapatan(_id_toko, pendapatan_totalx) {
+		let data = await this.toko.findOne({ _id: _id_toko });
 		if (data) {
 			let pendapatan_total = pendapatan_totalx ? Number(pendapatan_totalx) : Number(data.pendapatan_total);
-			await this.toko.updateOne({ toko_id }, { pendapatan_total });
-			return await this.toko.findOne({ toko_id: toko_id });
+			await this.toko.updateOne({ _id: _id_toko }, { pendapatan_total });
+			return await this.toko.findOne({ _id: _id_toko });
 		} else {
 			return null;
 		}

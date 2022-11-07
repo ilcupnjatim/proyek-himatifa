@@ -6,14 +6,14 @@ class ErrorHandler {
 
 	badRequest(res) {
 		return res.status(this.statusBadRequest).send({
-			status: res.statsuCode,
+			status: res.statusCode,
 			message: `Input DATA!`,
 		});
 	}
 
 	internalError(res) {
 		return res.status(this.statusInternalError).send({
-			status: res.statsuCode,
+			status: res.statusCode,
 			message: `Internal Server Error!`,
 		});
 	}

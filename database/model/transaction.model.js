@@ -22,14 +22,26 @@ const TransactionSchema = new mongoose.Schema(
 			type: Number,
 			required: true,
 		},
-		toko_id: {
+		_id_toko: {
 			type: String,
 			required: true,
 		},
-		cart: {
-			type: Array,
+		dateCustom: {
+			type: String,
 			required: true,
 		},
+		date: {
+			type: Date,
+			default: Date.now,
+		},
+		cart: [
+			{
+				id_product: { type: String, required: true },
+				total_price: { type: Number, required: true },
+				qt: { type: Number, required: true },
+				product_uom: { type: String, required: true },
+			},
+		],
 	},
 	{ versionKey: false }
 );

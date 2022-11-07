@@ -1,20 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Document</title>
-        <script
-            src="https://cdn.socket.io/4.4.1/socket.io.min.js"
-            integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H"
-            crossorigin="anonymous"
-        ></script>
-    </head>
-    <body>
-        <script>
-            const socket = io.connect(`http://localhost:8888`);
-            console.log(socket);
-        </script>
-    </body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+		<script src="https://cdn.socket.io/4.4.1/socket.io.min.js" integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H" crossorigin="anonymous"></script>
+	</head>
+	<body>
+		INI TEST SOCKET
+
+		<div id="toko"></div>
+		<script>
+			const socket = io.connect(`http://localhost:8888`);
+
+			socket.on("toko", (event) => {
+				$("#toko").html(`Ini Status Toko Terbaru ${event.data.status}`);
+			});
+
+			socket.on("transaksi", (event) => {
+				$("#toko").html(`Ini Status Transaksi Terbaru ${event.data.status}`);
+			});
+		</script>
+	</body>
 </html>

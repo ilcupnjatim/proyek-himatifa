@@ -43,6 +43,10 @@ async function getDataToko() {
 
 // getDataToko().then(console.log).catch(console.log());
 
-import mongoose from "mongoose";
-var _id = mongoose.Types.ObjectId("6362189f9aa8247dc8d6203a");
-console.log(_id);
+// import mongoose from "mongoose";
+// var _id = mongoose.Types.ObjectId("6362189f9aa8247dc8d6203a");
+// console.log(_id);
+
+let strs = "08/12/23 22:21:40";
+
+console.log(strs.split("/")[2].split(" ")[0]);

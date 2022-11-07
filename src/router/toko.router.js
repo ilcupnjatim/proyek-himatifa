@@ -25,6 +25,10 @@ router.post("/createtoko", uploadToko.single("file"), async (req, res, next) => 
 	await controller.createDataToko(req, res, next);
 });
 
+router.get("/transaction/:_id_toko", async (req, res, next) => {
+	await controller.getDataTokoTransaction(req, res, next);
+});
+
 router.get("/all/:status?", async (req, res, next) => {
 	await controller.getTokoStatus(req, res, next);
 });
