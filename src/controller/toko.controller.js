@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import { socket } from "../../app.js";
 import SellerDB from "../../database/db/seller.db.js";
 import TokoDB from "../../database/db/toko.db.js";
@@ -72,7 +73,9 @@ class TokoController extends TokoDB {
 			if (!toko_id) {
 				return this.err.badRequest(res);
 			}
-			const data_id = await this.findTokoId(toko_id);
+			let ObjectId = Types.ObjectId;
+			let checkID = ObjectId.isValid(toko_id) ? (String(new ObjectId(toko_id) === toko_id) ? true : false) : false;
+			const data_id = checkID ? await this.findById(toko_id) : await this.findTokoId(toko_id);
 			if (data_id) {
 				return res.status(200).send({
 					status: res.statusCode,
