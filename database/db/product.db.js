@@ -1,6 +1,7 @@
 import { productFile } from "../index.js";
 import Product from "../model/product.model.js";
 import Toko from "../model/toko.model.js";
+import StarDB from "./star.db.js";
 
 class ProductDB {
 	constructor() {
@@ -24,6 +25,7 @@ class ProductDB {
 		if (seller) {
 			await Toko.updateOne({ _id: toko_id }, { $push: { product: data } });
 		}
+		await new StarDB().addStar(0, id_product);
 		return { _id, id_product, toko_id, name, price, qt, image, product_uom, product_category };
 	}
 

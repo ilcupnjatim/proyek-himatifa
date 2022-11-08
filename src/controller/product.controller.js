@@ -155,11 +155,23 @@ class ProductController extends ProductDB {
 			}
 			await this.star.addStar(star, id_product);
 			let data = await this.star.getStar(id_product);
-			return res.status(200).send({
-				status: res.statusCode,
-				message: `Add Product Star ${id_product} : ${star}`,
-				data,
-			});
+			if (data) {
+				let total = 0;
+				data.map((v, i) => {
+					if (i != 0) total += v.star;
+				});
+				let total_star = total / (data.length - 1);
+				return res.status(200).send({
+					status: res.statusCode,
+					message: `Get Product Star ${id_product}`,
+					data: { array: data, total_star: total_star.toFixed(1) },
+				});
+			} else {
+				return res.status(404).send({
+					status: res.statusCode,
+					message: `Id product tidak ditemukan`,
+				});
+			}
 		} catch (error) {
 			console.log(error);
 			return this.err.internalError(res);
@@ -173,11 +185,23 @@ class ProductController extends ProductDB {
 				return this.err.badRequest(res);
 			}
 			let data = await this.star.getStar(id_product);
-			return res.status(200).send({
-				status: res.statusCode,
-				message: `Get Product Star ${id_product}`,
-				data,
-			});
+			if (data) {
+				let total = 0;
+				data.map((v, i) => {
+					if (i != 0) total += v.star;
+				});
+				let total_star = total / (data.length - 1);
+				return res.status(200).send({
+					status: res.statusCode,
+					message: `Get Product Star ${id_product}`,
+					data: { array: data, total_star: total_star.toFixed(1) },
+				});
+			} else {
+				return res.status(404).send({
+					status: res.statusCode,
+					message: `Id product tidak ditemukan`,
+				});
+			}
 		} catch (error) {
 			console.log(error);
 			return this.err.internalError(res);
