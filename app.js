@@ -20,6 +20,7 @@ import routerTransaction from "./src/router/transaction.router.js";
 
 import productUserRoutes from "./src/router/user/product.router.js";
 import transactionUserRoutes from "./src/router/user/transaction.router.js";
+import tokoUserRoutes from "./src/router/user/toko.router.js";
 
 const app = express();
 const { PORT } = process.env;
@@ -67,6 +68,7 @@ app.use("/api/admin/v1/data", adminRoutes);
 app.use("/api/admin/auth", loginRoutes);
 
 app.use("/api/user/v1/product", productUserRoutes);
+app.use("/api/user/v1/toko", tokoUserRoutes);
 app.use("/api/user/v1/transaction", transactionUserRoutes);
 
 const server = app.listen(PORT, async () => {
