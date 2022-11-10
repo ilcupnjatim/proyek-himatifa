@@ -17,6 +17,12 @@ class TransactionDB {
 		return { create, createCode };
 	}
 
+	async getCodeByTransactionId(_id) {
+		const data = await this.code.findOne({ transaction_id: _id });
+		const result = data ? data : null;
+		return result;
+	}
+
 	async getDataTransaction(_id) {
 		const data = await this.model.findOne({ _id });
 		const result = data ? data : null;

@@ -72,16 +72,17 @@ class TransactionController extends TransactionDB {
 				return this.err.badRequest(res);
 			}
 			let data = await this.getDataTransaction(_id);
-			if (data) {
+			const code = await this.getCodeByTransactionId(_id);
+			if (data && code) {
 				return res.status(200).send({
 					status: res.statusCode,
 					message: `Sukses GET Transaction id : ${data._id}`,
-					data,
+					data: { transaction: data, code },
 				});
 			} else {
 				res.status(404).send({
 					status: res.statusCode,
-					message: "Data Transaksi Tidak Ditemukan",
+					message: "Data Transaksi atau kode Tidak Ditemukan",
 				});
 			}
 		} catch (error) {
@@ -100,6 +101,7 @@ class TransactionController extends TransactionDB {
 			const up = await this.updateDataTransaction(_id, status);
 			if (up) {
 				const data = await this.getDataTransaction(_id);
+
 				socket.emit("transaksi", { data });
 				return res.status(200).send({
 					status: res.statusCode,
