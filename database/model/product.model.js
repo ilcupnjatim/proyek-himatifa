@@ -34,6 +34,10 @@ const ProductSchema = new mongoose.Schema(
 			type: Array,
 			required: true,
 		},
+		star: {
+			type: mongoose.ObjectId,
+			ref: "Star",
+		},
 	},
 	{ versionKey: false }
 );

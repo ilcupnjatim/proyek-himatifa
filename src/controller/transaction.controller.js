@@ -18,7 +18,7 @@ class TransactionController extends TransactionDB {
 			if (Array.isArray(cart) && cart.length) {
 				let yes = false;
 				for (let i = 0; i < cart.length; i++) {
-					if (!cart[i].id_product || !cart[i].total_price || !cart[i].qt || !cart[i].product_uom) {
+					if (!cart[i].id_product || !cart[i].total_price || !cart[i].qt || !cart[i].product_uom || !cart[i].name) {
 						yes = true;
 					}
 				}
@@ -38,6 +38,7 @@ class TransactionController extends TransactionDB {
 				let array = cart.map((v, i) => {
 					return {
 						id_product: v.id_product,
+						name: v.name,
 						total_price: Number(v.total_price),
 						qt: Number(v.qt),
 						product_uom: v.product_uom,

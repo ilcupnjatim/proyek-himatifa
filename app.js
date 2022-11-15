@@ -59,7 +59,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/seller/v1/shop", passport.authenticate("jwt", { session: false }), routerShop);
-app.use("/api/seller/v1/product", passport.authenticate("jwt", { session: false }), routerProduct);
+app.use("/api/seller/v1/product", routerProduct);
 app.use("/api/seller/v1/transaction", routerTransaction);
 app.use("/api/seller/auth", routerAuth);
 app.use("/api/seller/file", routerFile);

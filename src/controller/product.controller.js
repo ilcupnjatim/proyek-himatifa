@@ -160,7 +160,7 @@ class ProductController extends ProductDB {
 				data.map((v, i) => {
 					if (i != 0) total += v.star;
 				});
-				let total_star = total / (data.length - 1);
+				let total_star = total == 0 ? 0 : total / (data.length - 1);
 				return res.status(200).send({
 					status: res.statusCode,
 					message: `Get Product Star ${id_product}`,
@@ -190,7 +190,7 @@ class ProductController extends ProductDB {
 				data.map((v, i) => {
 					if (i != 0) total += v.star;
 				});
-				let total_star = total / (data.length - 1);
+				let total_star = total == 0 ? 0 : total / (data.length - 1);
 				return res.status(200).send({
 					status: res.statusCode,
 					message: `Get Product Star ${id_product}`,

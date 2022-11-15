@@ -37,6 +37,7 @@ const TransactionSchema = new mongoose.Schema(
 		cart: [
 			{
 				id_product: { type: String, required: true },
+				name: { type: String, required: true },
 				total_price: { type: Number, required: true },
 				qt: { type: Number, required: true },
 				product_uom: { type: String, required: true },
