@@ -1,9 +1,11 @@
 import { tokoFile } from "../index.js";
+import Product from "../model/product.model.js";
 import Toko from "../model/toko.model.js";
 
 class TokoDB {
 	constructor() {
 		this.toko = Toko;
+		this.product = Product;
 	}
 
 	async createToko(name = "", alamat = "", toko_id, owner = "", image_profile = "", status = 0) {
@@ -71,6 +73,7 @@ class TokoDB {
 
 			const datachunk = await tokoFile.chunks.findOne({ files_id: data.image_profile });
 			if (datachunk) await tokoFile.chunks.deleteOne({ files_id: data.image_profile });
+			await this.product.deleteMany({ toko_id: data._id });
 			await this.toko.deleteOne({ toko_id });
 			return true;
 		}
